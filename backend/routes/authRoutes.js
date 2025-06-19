@@ -1,19 +1,17 @@
+// backend/routes/authRoutes.js
 import express from 'express';
-const router = express.Router();
-
 import {
   registerUser,
   loginUser,
+  loginAdmin,
   logoutUser,
-  loginAdmin, // <-- import the new admin login controller
 } from '../controllers/authController.js';
 
-// USER ROUTES
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.post('/logout', logoutUser);
+const router = express.Router();
 
-// ADMIN ROUTE
-router.post('/admin/login', loginAdmin); // <-- add this route
+router.post('/register', registerUser); // user signup
+router.post('/login',    loginUser);    // user login (session)
+router.post('/admin',    loginAdmin);   // admin login (JWT)
+router.post('/logout',   logoutUser);   // user logout (session destroy)
 
 export default router;

@@ -1,5 +1,4 @@
 // backend/controllers/adminController.js
-// Admin‑only controller logic (Bearer‑token protected)
 
 import asyncHandler from 'express-async-handler';
 import Book from '../models/bookModel.js';
@@ -9,18 +8,16 @@ import Review from '../models/reviewModel.js';
 /**
  * @desc   Add a new book (admin only)
  * @route  POST /api/admin/books
- * @access Admin (JWT)
+ * @access Admin
  */
 const addBook = asyncHandler(async (req, res) => {
   const { title, author, description, coverImage } = req.body;
 
-  // Basic validation
   if (!title || !author) {
     res.status(400);
     throw new Error('Title and Author are required');
   }
 
-  // Create book document
   const book = await Book.create({ title, author, description, coverImage });
   res.status(201).json(book);
 });
@@ -28,26 +25,26 @@ const addBook = asyncHandler(async (req, res) => {
 /**
  * @desc   Delete a book and its reviews (admin only)
  * @route  DELETE /api/admin/books/:id
- * @access Admin (JWT)
+ * @access Admin
  */
 const deleteBook = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id);
+
   if (!book) {
     res.status(404);
     throw new Error('Book not found');
   }
 
-  // Remove all reviews linked to the book
   await Review.deleteMany({ book: book._id });
-  await book.remove();
+  await Book.deleteOne({ _id: book._id });
 
-  res.json({ message: 'Book removed' });
+  res.json({ message: 'Book and related reviews deleted successfully' });
 });
 
 /**
  * @desc   List every registered user (admin only)
  * @route  GET /api/admin/users
- * @access Admin (JWT)
+ * @access Admin
  */
 const getAllUsers = asyncHandler(async (_req, res) => {
   const users = await User.find().select('-password');
@@ -57,7 +54,7 @@ const getAllUsers = asyncHandler(async (_req, res) => {
 /**
  * @desc   List every review in the system (admin only)
  * @route  GET /api/admin/reviews
- * @access Admin (JWT)
+ * @access Admin
  */
 const getAllReviews = asyncHandler(async (_req, res) => {
   const reviews = await Review.find()
