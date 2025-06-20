@@ -63,4 +63,20 @@ const getAllReviews = asyncHandler(async (_req, res) => {
   res.json(reviews);
 });
 
-export { addBook, deleteBook, getAllUsers, getAllReviews };
+/**
+ * @desc   List all books (admin only)
+ * @route  GET /api/admin/books
+ * @access Admin
+ */
+const getAllBooks = asyncHandler(async (_req, res) => {
+  const books = await Book.find();
+  res.json(books);
+});
+
+export {
+  addBook,
+  deleteBook,
+  getAllUsers,
+  getAllReviews,
+  getAllBooks
+};

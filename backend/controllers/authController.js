@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
+import bcrypt from 'bcryptjs';  
 
 /* ------------------------------------------------------------------ */
 /*  REGISTER USER  – POST /api/auth/register                          */
@@ -61,32 +62,29 @@ const loginUser = asyncHandler(async (req, res) => {
 /* ------------------------------------------------------------------ */
 /*  ADMIN LOGIN  – POST /api/auth/admin                               */
 /* ------------------------------------------------------------------ */
-const loginAdmin = asyncHandler(async (req, res) => {
+ const adminLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-  if (!user || !(await user.matchPassword(password))) {
+  if (
+    user &&
+    user.role === 'admin' &&
+    (await bcrypt.compare(password, user.password))
+  ) {
+    // No token!  Just tell the client it’s okay.
+    res.json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: 'admin',
+      },
+    });
+  } else {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error('Invalid admin credentials');
   }
-
-  if (user.role !== 'admin') {
-    res.status(403);
-    throw new Error('Access denied: Not an admin');
-  }
-
-  // Admin also gets a session (no JWT)
-  req.session.userId = user._id;
-
-  res.json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    message: 'Admin logged in with session',
-  });
 });
-
 /* ------------------------------------------------------------------ */
 /*  LOGOUT  – POST /api/auth/logout                                   */
 /* ------------------------------------------------------------------ */
@@ -100,5 +98,29 @@ const logoutUser = (req, res) => {
     res.json({ message: 'User logged out successfully' });
   });
 };
+ const getMe = asyncHandler(async (req, res) => {
+  const authHeader = req.headers.authorization || '';
+  if (!authHeader.startsWith('Basic ')) {
+    res.status(401);
+    throw new Error('No Basic Auth header');
+  }
 
-export { registerUser, loginUser, loginAdmin, logoutUser };
+  const base64Creds = authHeader.split(' ')[1];
+  const [email, password] = Buffer.from(base64Creds, 'base64')
+    .toString()
+    .split(':');
+
+  const user = await User.findOne({ email });
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    res.status(401);
+    throw new Error('Invalid credentials');
+  }
+
+  res.json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  });
+});
+export { registerUser, loginUser , adminLogin,logoutUser , getMe };

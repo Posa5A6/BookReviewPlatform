@@ -54,7 +54,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/auth', authRoutes); // ✅ This registers /api/auth/login
-
 // Error handling middleware
 app.use(notFound);
 app.use(errorHandler);

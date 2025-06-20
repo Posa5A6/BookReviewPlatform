@@ -1,16 +1,34 @@
 import express from 'express';
+const router = express.Router();
+
 import {
   addBook,
   deleteBook,
+  getAllBooks,       // ✅ Consolidated import
   getAllUsers,
-  getAllReviews,
+  getAllReviews
 } from '../controllers/adminController.js';
 
-const router = express.Router();
+import adminBasicAuth from '../middleware/adminBasicAuth.js';
 
-router.post('/books', addBook);       // POST /api/admin/books
-router.delete('/books/:id', deleteBook);
-router.get('/users', getAllUsers);
-router.get('/reviews', getAllReviews);
+// ─────────────────────────────
+// Books Management (Admin Only)
+// ─────────────────────────────
+router.post('/books', adminBasicAuth, addBook);
+router.delete('/books/:id', adminBasicAuth, deleteBook);
+router.get('/books', adminBasicAuth, getAllBooks);  // ✅ Route for getting all books
+
+// ─────────────────────────────
+// Users & Reviews (Admin Only)
+// ─────────────────────────────
+router.get('/users', adminBasicAuth, getAllUsers);
+router.get('/reviews', adminBasicAuth, getAllReviews);
+
+// ─────────────────────────────
+// Dashboard Welcome Message
+// ─────────────────────────────
+router.get('/dashboard', adminBasicAuth, (req, res) => {
+  res.json({ message: 'Welcome, admin' });
+});
 
 export default router;
