@@ -1,0 +1,212 @@
+/* AdminDashboard.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+  background: #fdfdfd;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #2e2e2e;
+  margin-bottom: 2rem;
+}
+
+.stat-grid {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: linear-gradient(135deg, #6c63ff, #3f9aff);
+  color: white;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  text-align: center;
+  width: 30%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0 1rem;
+}
+
+.section-header h3 {
+  color: #444;
+}
+
+.section-header button {
+  background: #6c63ff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.section-header button:hover {
+  background: #584ed3;
+}
+
+.book-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.book-table th,
+.book-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.book-table th {
+  background-color: #f3f3f3;
+  color: #333;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #444;
+  font-size: 1rem;
+}
+
+.icon-btn.danger {
+  color: crimson;
+}
+
+.collapsible {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f0f4f8;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.chev {
+  font-size: 1.2rem;
+}
+
+.list {
+  margin: 1rem 0 2rem;
+  padding-left: 1rem;
+  background: #fafafa;
+  border-left: 4px solid #6c63ff;
+  border-radius: 6px;
+}
+
+.list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.error {
+  color: crimson;
+  text-align: center;
+  font-weight: bold;
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #6c63ff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin: 100px auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+  margin-bottom: 1rem;
+}
+
+.modal input,
+.modal textarea {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.modal button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal button[type='submit'] {
+  background-color: #3f9aff;
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.modal button.secondary {
+  background-color: #ddd;
+  color: #333;
+}
+
+.modal .error {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: crimson;
+}

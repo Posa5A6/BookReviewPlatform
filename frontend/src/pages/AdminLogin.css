@@ -1,0 +1,110 @@
+/* Page background */
+.auth-container {
+  max-width: 400px;
+  margin: 5vh auto;
+  padding: 2.5rem 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Error */
+.error {
+  color: #d9534f;
+  font-size: 0.92rem;
+  margin-top: 0.4rem;
+  display: block;
+}
+
+/* Button */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Disabled / Spinner Effect */
+button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+  position: relative;
+}
+
+button[disabled]::after {
+  content: '';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #fff;
+  border-top: 3px solid #0056b3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  transform: translateY(-50%);
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0deg) translateY(-50%); }
+  100% { transform: rotate(360deg) translateY(-50%); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-container {
+    margin: 3vh 1rem;
+    padding: 2rem 1.5rem;
+  }
+}

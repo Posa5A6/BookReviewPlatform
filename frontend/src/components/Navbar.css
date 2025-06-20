@@ -1,0 +1,135 @@
+/* ---- Root Palette ---- */
+:root {
+  --accent: #6366f1;          /* indigo‑500 */
+  --accent-dark: #4f46e5;     /* indigo‑600 */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  --radius: 14px;
+  font-family: "Inter", sans-serif;
+}
+
+/* ---- Navbar Wrapper ---- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(14px);
+  background: var(--glass-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.2rem;
+  box-shadow: var(--shadow);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+/* Logo */
+.logo {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  text-decoration: none;
+}
+
+/* Left / middle / right layout */
+.navbar-left,
+.navbar-right,
+.navbar-middle {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.navbar-middle {
+  flex: 1;
+  justify-content: center;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Nav links */
+.navbar a:not(.logo) {
+  position: relative;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 500;
+  transition: color 0.25s;
+}
+
+.navbar a:not(.logo)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0%;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s;
+}
+
+.navbar a:not(.logo):hover {
+  color: var(--accent-dark);
+}
+.navbar a:not(.logo):hover::after {
+  width: 100%;
+}
+
+/* Logout button */
+.logout-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.logout-btn:hover {
+  background: var(--accent-dark);
+}
+
+/* ---- Mobile Responsive ---- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+.hamburger span {
+  width: 22px;
+  height: 2.5px;
+  background: #374151;
+  border-radius: 2px;
+}
+
+/* Hide desktop links on small screens */
+@media (max-width: 640px) {
+  .navbar-right {
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+    border-radius: var(--radius);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 1.3rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: all 0.35s ease;
+  }
+
+  .navbar-right.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}

@@ -1,0 +1,169 @@
+/* Root Variables */
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --background: #f4f6fc;
+  --card-bg: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  --radius: 12px;
+  --transition: 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Page Container */
+.books-page {
+  padding: 3rem 1.5rem;
+  max-width: 1200px;
+  margin: auto;
+  background: var(--background);
+  min-height: 100vh;
+}
+
+/* Heading */
+.books-heading {
+  text-align: center;
+  font-size: 2.6rem;
+  color: var(--text-main);
+  margin-bottom: 2rem;
+  letter-spacing: 0.5px;
+}
+
+/* Grid Layout */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+/* Book Card */
+.book-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.6rem;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #e5e7eb;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.book-card h3 {
+  color: var(--primary-dark);
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.book-card p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+/* View Details Link */
+.details-link {
+  margin-top: auto;
+  display: inline-block;
+  background-color: var(--primary);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background var(--transition);
+}
+
+.details-link:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Spinner */
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+.spinner-ball {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #d1d5db;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Search Input (Optional) */
+.search-input {
+  display: block;
+  margin: 1rem auto 2rem;
+  width: 100%;
+  max-width: 300px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.pagination button {
+  margin: 0 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.pagination button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Error Message */
+.error {
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .books-heading {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,116 @@
+/* src/pages/Home.css */
+
+.home-container {
+  padding: 2rem;
+  background: linear-gradient(to right, #f8fafc, #e2e8f0);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hero {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.hero-subtitle {
+  margin-top: 0.8rem;
+  font-size: 1.2rem;
+  color: #4b5563;
+}
+
+.explore-button {
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.5rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.explore-button:hover {
+  background-color: #1d4ed8;
+}
+
+.featured-section {
+  margin-top: 5rem;
+}
+
+.section-heading {
+  font-size: 2rem;
+  color: #111827;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.featured-books {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.book-card {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.book-image {
+  height: 260px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.book-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.3rem;
+}
+
+.book-author {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+/* Spinner styles */
+.spinner-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: white;
+}
+
+.spinner-ball {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ccc;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

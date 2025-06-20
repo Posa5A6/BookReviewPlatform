@@ -1,0 +1,132 @@
+/* Theme */
+:root {
+  --accent: #6366f1;
+  --accent-dark: #4f46e5;
+  --radius: 14px;
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  --text-muted: #6b7280;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Container */
+.book-details {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 2rem 1.5rem;
+  background: #ffffff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Header text */
+.book-details h2 {
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
+  color: var(--accent-dark);
+}
+
+/* Cover image */
+.cover-img {
+  max-width: 220px;
+  border-radius: var(--radius);
+  margin: 1rem 0;
+  box-shadow: var(--shadow);
+}
+.cover-placeholder {
+  width: 220px;
+  height: 310px;
+  background: #f3f4f6;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  margin: 1rem 0;
+}
+
+/* Description */
+.desc-label {
+  margin-top: 1rem;
+}
+.description {
+  line-height: 1.6;
+  color: #374151;
+}
+
+/* Visit link */
+.visit-link {
+  display: inline-block;
+  margin: 1rem 0;
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.visit-link.muted {
+  color: var(--text-muted);
+}
+
+/* Review Button */
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  margin: 1rem 0 2rem;
+  transition: background 0.3s;
+}
+.btn:hover { background: var(--accent-dark); }
+
+.muted { color: var(--text-muted); }
+
+/* Reviews Section */
+.reviews-section h3 {
+  margin: 2rem 0 1.2rem;
+  font-size: 1.5rem;
+}
+
+/* Two‑column grid */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Review Card */
+.review-card {
+  background: #f9fafb;
+  border-radius: var(--radius);
+  padding: 1rem 1rem 0.9rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+.stars { color: #ffb400; }
+.review-comment { color: #374151; margin-bottom: 0.5rem; }
+.review-date { font-size: 0.85rem; color: var(--text-muted); }
+
+/* Spinner */
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+}
+.spinner-ball {
+  width: 70px;
+  height: 70px;
+  border: 7px solid #e5e7eb;
+  border-top: 7px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.loading-text { margin-top: 1rem; color: var(--text-muted); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Error text */
+.error { color: #dc2626; font-weight: 600; margin-top: 2rem; }
