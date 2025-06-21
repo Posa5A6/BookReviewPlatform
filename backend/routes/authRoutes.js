@@ -14,5 +14,5 @@ router.post('/register', registerUser); // user signup
 router.post('/login',    loginUser);    // user login (session)
 router.post('/logout',   logoutUser);   // user logout (session destroy)
 router.get('/me', getMe); // In authRoutes.js
-router.post('/admin/login', adminLogin); 
+router.post('/adminLogin', adminLogin); 
 export default router;

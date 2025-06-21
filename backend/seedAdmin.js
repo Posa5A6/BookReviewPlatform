@@ -11,22 +11,22 @@ const seedAdmin = async () => {
 
     const existing = await User.findOne({ email: 'admin@example.com' });
     if (existing) {
-      console.log('ℹ️ Admin already exists. Deleting and re-creating...');
+      console.log('ℹ Admin already exists. Deleting and re-creating...');
       await User.deleteOne({ email: 'admin@example.com' });
     }
 
     const admin = new User({
       name: 'Admin',
       email: 'admin@example.com',
-      password: 'admin123', // 🔐 plain password; pre-save hook hashes it
+      password: 'admin123', //  plain password; pre-save hook hashes it
       role: 'admin',
     });
 
     const saved = await admin.save();
 
-    console.log('✅ Admin saved:', saved);
+    console.log(' Admin saved:', saved);
   } catch (err) {
-    console.error('❌ Error creating admin:', err.message);
+    console.error(' Error creating admin:', err.message);
   } finally {
     mongoose.connection.close();
   }

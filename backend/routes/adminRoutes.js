@@ -1,33 +1,23 @@
 import express from 'express';
-const router = express.Router();
-
 import {
   addBook,
   deleteBook,
-  getAllBooks,       // ✅ Consolidated import
+  getAllBooks,
   getAllUsers,
   getAllReviews
 } from '../controllers/adminController.js';
 
-import adminBasicAuth from '../middleware/adminBasicAuth.js';
+import adminSessionProtect from '../middleware/adminBasicAuth.js';
 
-// ─────────────────────────────
-// Books Management (Admin Only)
-// ─────────────────────────────
-router.post('/books', adminBasicAuth, addBook);
-router.delete('/books/:id', adminBasicAuth, deleteBook);
-router.get('/books', adminBasicAuth, getAllBooks);  // ✅ Route for getting all books
+const router = express.Router();
 
-// ─────────────────────────────
-// Users & Reviews (Admin Only)
-// ─────────────────────────────
-router.get('/users', adminBasicAuth, getAllUsers);
-router.get('/reviews', adminBasicAuth, getAllReviews);
-
-// ─────────────────────────────
-// Dashboard Welcome Message
-// ─────────────────────────────
-router.get('/dashboard', adminBasicAuth, (req, res) => {
+// Admin routes (all protected via session-based admin middleware)
+router.post('/books', adminSessionProtect, addBook);
+router.delete('/books/:id', adminSessionProtect, deleteBook);
+router.get('/books', adminSessionProtect, getAllBooks);
+router.get('/users', adminSessionProtect, getAllUsers);
+router.get('/reviews', adminSessionProtect, getAllReviews);
+router.get('/dashboard', adminSessionProtect, (req, res) => {
   res.json({ message: 'Welcome, admin' });
 });
 

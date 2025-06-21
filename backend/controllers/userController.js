@@ -1,5 +1,3 @@
-// backend/controllers/userController.js
-
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 
@@ -9,7 +7,14 @@ import User from '../models/userModel.js';
  * @access User (session)
  */
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).select('-password');
+  const userId = req.session.userId;
+
+  if (!userId) {
+    res.status(401);
+    throw new Error('Not authenticated');
+  }
+
+  const user = await User.findById(userId).select('-password');
 
   if (!user) {
     res.status(404);
@@ -25,19 +30,25 @@ const getUserProfile = asyncHandler(async (req, res) => {
  * @access User (session)
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const userId = req.session.userId;
+
+  if (!userId) {
+    res.status(401);
+    throw new Error('Not authenticated');
+  }
+
+  const user = await User.findById(userId);
 
   if (!user) {
     res.status(404);
     throw new Error('User not found');
   }
 
-  // Update fields if sent
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
 
   if (req.body.password) {
-    user.password = req.body.password; // hashed automatically in model
+    user.password = req.body.password; // assumed to be hashed in model
   }
 
   const updatedUser = await user.save();

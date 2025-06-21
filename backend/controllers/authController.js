@@ -66,12 +66,15 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
+
   if (
     user &&
     user.role === 'admin' &&
     (await bcrypt.compare(password, user.password))
   ) {
-    // No token!  Just tell the client it’s okay.
+    // ✅ Store session ID so admin stays authenticated
+    req.session.userId = user._id;
+
     res.json({
       user: {
         _id: user._id,
@@ -79,12 +82,16 @@ const loginUser = asyncHandler(async (req, res) => {
         email: user.email,
         role: 'admin',
       },
+      message: 'Admin logged in successfully',
     });
   } else {
     res.status(401);
     throw new Error('Invalid admin credentials');
   }
+  console.log('Session:', req.session);
+
 });
+
 /* ------------------------------------------------------------------ */
 /*  LOGOUT  – POST /api/auth/logout                                   */
 /* ------------------------------------------------------------------ */
@@ -98,29 +105,35 @@ const logoutUser = (req, res) => {
     res.json({ message: 'User logged out successfully' });
   });
 };
- const getMe = asyncHandler(async (req, res) => {
-  const authHeader = req.headers.authorization || '';
-  if (!authHeader.startsWith('Basic ')) {
+ /* ------------------------------------------------------------------ */
+/*  GET CURRENT USER  – GET /api/auth/me                              */
+/* ------------------------------------------------------------------ */
+const getMe = asyncHandler(async (req, res) => {
+  /* Accept either a normal‑user session or an admin session.
+     If you use ONE key for both (recommended), just read req.session.userId. */
+      console.log('Session:', req.session);
+      
+  const userId = req.session.userId ?? req.session.adminId;
+
+  if (!userId) {
     res.status(401);
-    throw new Error('No Basic Auth header');
+    throw new Error('Not logged in');
   }
 
-  const base64Creds = authHeader.split(' ')[1];
-  const [email, password] = Buffer.from(base64Creds, 'base64')
-    .toString()
-    .split(':');
-
-  const user = await User.findOne({ email });
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    res.status(401);
-    throw new Error('Invalid credentials');
+  // Exclude password before sending
+  const user = await User.findById(userId).select('-password');
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
   }
 
   res.json({
-    _id: user._id,
-    name: user.name,
+    _id:   user._id,
+    name:  user.name,
     email: user.email,
-    role: user.role,
+    role:  user.role,
   });
 });
+
+
 export { registerUser, loginUser , adminLogin,logoutUser , getMe };

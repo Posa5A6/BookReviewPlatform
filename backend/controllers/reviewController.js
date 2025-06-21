@@ -9,36 +9,44 @@ import Book from '../models/bookModel.js';
  * @route  POST /api/reviews/:bookId
  * @access User (session)
  */
+/* ------------------------------------------------------------------ */
+/*  CREATE REVIEW  – POST /api/reviews/:bookId                        */
+/* ------------------------------------------------------------------ */
 const createReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body;
   const bookId = req.params.bookId;
 
-  // Validate inputs
+  /* 🔑 1.  Get the logged‑in user from the session */
+  const userId = req.session.userId;
+  if (!userId) {
+    res.status(401);
+    throw new Error('Not authenticated');
+  }
+
+  /* 2. Validate inputs */
   if (!rating || !comment) {
     res.status(400);
     throw new Error('Rating and comment are required');
   }
 
+  /* 3. Verify the book exists */
   const book = await Book.findById(bookId);
   if (!book) {
     res.status(404);
     throw new Error('Book not found');
   }
 
-  // Check if user already reviewed this book
-  const existingReview = await Review.findOne({
-    user: req.user._id,
-    book: bookId,
-  });
-
+  /* 4. Prevent duplicate reviews */
+  const existingReview = await Review.findOne({ user: userId, book: bookId });
   if (existingReview) {
     res.status(400);
     throw new Error('You have already reviewed this book');
   }
 
+  /* 5. Create the review */
   const review = await Review.create({
     book: bookId,
-    user: req.user._id,
+    user: userId,
     rating,
     comment,
   });
