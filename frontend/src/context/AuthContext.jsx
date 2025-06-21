@@ -6,24 +6,20 @@ import React, {
   useState,
   useMemo,
 } from 'react';
-import api from '../api/axios';      // axios.create({ baseURL, withCredentials: true })
-//const { data } = await api.get('/auth/me');
+import api from '../api/axios'; // axios.create({ baseURL, withCredentials: true })
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);   // ⏳ for splash / spinner
+  const [loading, setLoading] = useState(true); // used for splash/loading state
 
-  /* --------------------------------------------------------------- */
-  /*  On first mount → ask the server who I am (if anyone)           */
-  /* --------------------------------------------------------------- */
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await api.get('/auth/me'); // sends cookie automatically
-        setUser(data);                              // ✔️ logged‑in user
+        const { data } = await api.get('/auth/me'); // ✅ checks session login
+        setUser(data); // ✅ sets the user if logged in
       } catch (err) {
-        // 401/403 simply mean "not authenticated" – don't treat as error
         const status = err.response?.status;
         if (status !== 401 && status !== 403) {
           console.error(
@@ -31,7 +27,7 @@ export const AuthProvider = ({ children }) => {
             err.response?.data?.message || err.message
           );
         }
-        setUser(null);                              // 🚫 guest
+        setUser(null); // not authenticated
       } finally {
         setLoading(false);
       }
@@ -40,25 +36,19 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  /* --------------------------------------------------------------- */
-  /*  Logout helper                                                  */
-  /* --------------------------------------------------------------- */
   const logout = async () => {
     try {
-      await api.post('/auth/logout');               // backend destroys session
+      await api.post('/auth/logout'); // ✅ clears server session
     } catch (err) {
       console.error(
         'Logout failed:',
         err.response?.data?.message || err.message
       );
     } finally {
-      setUser(null);
+      setUser(null); // ✅ clear user from state
     }
   };
 
-  /* --------------------------------------------------------------- */
-  /*  Memoized helpers to avoid unnecessary re‑renders               */
-  /* --------------------------------------------------------------- */
   const value = useMemo(
     () => ({
       user,
@@ -70,7 +60,11 @@ export const AuthProvider = ({ children }) => {
     [user, loading]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);

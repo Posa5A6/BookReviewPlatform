@@ -1,23 +1,18 @@
+// src/api/userApi.js
 import axios from 'axios';
 
 const API = axios.create({
-baseURL:  'https://bookreviewplatform-3.onrender.com/api',
-  withCredentials: true, // Required for session-based auth
+  baseURL: 'https://bookreviewplatform-3.onrender.com/api',
+  withCredentials: true, // ✅ Required to send session cookies
 });
 
-// 👤 Get current logged-in user's profile
+// 👤 Get current logged-in user's profile (session-based)
 export const getUserProfile = async () => {
   const response = await API.get('/users/profile');
   return response.data;
 };
 
-// 🧑‍💼 Get a user by ID (optional — if needed for admin or profile display)
-export const getUserById = async (userId) => {
-  const response = await API.get(`/users/${userId}`);
-  return response.data;
-};
-
-// ⚙️ Update user profile (if needed)
+// ⚙️ Update user profile (session-based)
 export const updateUserProfile = async (profileData) => {
   const response = await API.put('/users/profile', profileData);
   return response.data;

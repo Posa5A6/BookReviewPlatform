@@ -1,6 +1,6 @@
 import React from 'react';
-import { FaGithub, FaLinkedin } from 'react-icons/fa'; // importing icons
-import './Footer.css'; // optional CSS for styling
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import './Footer.css';
 
 const Footer = () => {
   const year = new Date().getFullYear();
@@ -14,7 +14,7 @@ const Footer = () => {
             href="https://github.com/Posa5A6"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="GitHub"
+            aria-label="GitHub Profile"
           >
             <FaGithub size={24} />
           </a>
@@ -22,7 +22,7 @@ const Footer = () => {
             href="https://www.linkedin.com/in/posa5a6"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="LinkedIn"
+            aria-label="LinkedIn Profile"
           >
             <FaLinkedin size={24} />
           </a>

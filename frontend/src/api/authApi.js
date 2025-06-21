@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 // Create a custom axios instance
 const API = axios.create({
   baseURL: "https://bookreviewplatform-3.onrender.com/api",
@@ -19,26 +18,26 @@ export const registerUser = async (formData) => {
   return response.data;
 };
 
-// LOGIN admin
+// 🔐 LOGIN admin
 export const loginAdmin = async (adminData) => {
   const response = await API.post('/auth/adminLogin', adminData);
   return response.data;
 };
 
-// LOGOUT (clears session)
+// 🚪 LOGOUT (clears session)
 export const logoutUser = async () => {
   const response = await API.post('/auth/logout');
   return response.data;
 };
 
-// GET user profile
-export const getUserProfile = async (userId) => {
-  const response = await API.get(`/users/${userId}`);
+// ✅ GET user profile
+export const getUserProfile = async () => {
+  const response = await API.get(`/users/profile`);
   return response.data;
 };
 
-// UPDATE user profile
-export const updateUserProfile = async (userId, updatedData) => {
-  const response = await API.put(`/users/${userId}`, updatedData);
+// ✅ UPDATE user profile
+export const updateUserProfile = async (updatedData) => {
+  const response = await API.put(`/users/profile`, updatedData);
   return response.data;
 };
