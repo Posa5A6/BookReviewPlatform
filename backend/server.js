@@ -46,8 +46,8 @@ app.use(session({
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   cookie: {
     httpOnly: true,
-    secure: false,        // ✅ use true in production (HTTPS)
-    sameSite: 'lax',      // ✅ for localhost testing
+    secure: true,        // ✅ use true in production (HTTPS)
+    sameSite: 'None',      // ✅ for localhost testing
     maxAge: 1000 * 60 * 60 * 24, // 1 day
   }
 }));
