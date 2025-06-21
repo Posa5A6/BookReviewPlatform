@@ -1,19 +1,21 @@
 import axios from 'axios';
 
+
+// Create a custom axios instance
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
-  withCredentials: true, // for session handling via cookies
+  baseURL: "https://bookreviewplatform-3.onrender.com/api",
+  withCredentials: true, // ⬅️ Required to send session cookies
 });
 
-// REGISTER user
-export const registerUser = async (userData) => {
-  const response = await API.post('/auth/register', userData);
+// 👤 LOGIN USER
+export const loginUser = async (formData) => {
+  const response = await API.post("/auth/login", formData);
   return response.data;
 };
 
-// LOGIN user
-export const loginUser = async (userData) => {
-  const response = await API.post('/auth/login', userData);
+// 👤 REGISTER USER
+export const registerUser = async (formData) => {
+  const response = await API.post("/auth/register", formData);
   return response.data;
 };
 

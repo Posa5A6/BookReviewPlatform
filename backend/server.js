@@ -15,61 +15,59 @@ import userRoutes from './routes/userRoutes.js';
 import bookRoutes from './routes/bookRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 
-// Load environment variables
 dotenv.config();
-
-// Connect to MongoDB
 connectDB();
 
-// Initialize express
 const app = express();
 
-// Middleware
+// CORS
 app.use(
   cors({
     origin: [
       'http://localhost:3000',
       'https://bookreview-platform.netlify.app',
-      // add future custom domains here, e.g. 'https://books.example.com'
+      'https://bookreviewplatform-3.onrender.com',
     ],
-    credentials: true,        // sends Access‑Control‑Allow‑Credentials: true
-    optionsSuccessStatus: 200 // avoids 204 issues with legacy browsers
+    credentials: true,
+    optionsSuccessStatus: 200,
   })
-);app.use(express.json());
+);
 
-// Session middleware (for user login)
+// JSON parser
+app.use(express.json());
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'my-secret',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-  cookie: {
-    httpOnly: true,
-    secure: true,        // ✅ use true in production (HTTPS)
-    sameSite: 'None',      // ✅ for localhost testing
-    maxAge: 1000 * 60 * 60 * 24, // 1 day
-  }
-}));
+// Sessions
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'my-secret',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: 1000 * 60 * 60 * 1000,
+    },
+  })
+);
 
-
-// Test route
+// Routes
 app.get('/', (_req, res) => {
   res.send('📚 Book Review Platform API is running...');
 });
 
-// Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/reviews', reviewRoutes);
-app.use('/api/auth', authRoutes); // This registers /api/auth/login
-// Error handling middleware
+app.use('/api/auth', authRoutes);
+
+// Error handlers
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
-  console.log(` Server running on http://localhost:${PORT}`)
+  console.log(`✅ Server running on http://localhost:${PORT}`)
 );

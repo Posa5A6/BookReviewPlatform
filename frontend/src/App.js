@@ -28,6 +28,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/books" element={<BookList />} />
         <Route path="/books/:id" element={<BookDetails />} />
+        <Route path="/reviews/:id" element={<ReviewForm />} />
 
         {/* Review form (protect later for logged-in users) */}
         <Route path="/books/:id/review" element={<ReviewForm />} />

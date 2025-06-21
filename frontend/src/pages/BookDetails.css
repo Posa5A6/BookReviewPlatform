@@ -76,9 +76,13 @@
   margin: 1rem 0 2rem;
   transition: background 0.3s;
 }
-.btn:hover { background: var(--accent-dark); }
+.btn:hover {
+  background: var(--accent-dark);
+}
 
-.muted { color: var(--text-muted); }
+.muted {
+  color: var(--text-muted);
+}
 
 /* Reviews Section */
 .reviews-section h3 {
@@ -86,7 +90,7 @@
   font-size: 1.5rem;
 }
 
-/* Two‑column grid */
+/* Grid */
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -105,9 +109,17 @@
   justify-content: space-between;
   margin-bottom: 0.4rem;
 }
-.stars { color: #ffb400; }
-.review-comment { color: #374151; margin-bottom: 0.5rem; }
-.review-date { font-size: 0.85rem; color: var(--text-muted); }
+.stars {
+  color: #ffb400;
+}
+.review-comment {
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+.review-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
 
 /* Spinner */
 .spinner-container {
@@ -125,8 +137,77 @@
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
-.loading-text { margin-top: 1rem; color: var(--text-muted); }
-@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  margin-top: 1rem;
+  color: var(--text-muted);
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* Error text */
-.error { color: #dc2626; font-weight: 600; margin-top: 2rem; }
+.error {
+  color: #dc2626;
+  font-weight: 600;
+  margin-top: 2rem;
+}
+
+/* 📱 Mobile Responsiveness */
+@media (max-width: 768px) {
+  .book-details {
+    padding: 1.2rem 1rem;
+    margin: 2rem 1rem;
+  }
+
+  .book-details h2 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .cover-img,
+  .cover-placeholder {
+    max-width: 160px;
+    height: auto;
+    margin: 1rem auto;
+    display: block;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .reviews-section h3 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .review-card {
+    padding: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .book-details {
+    padding: 1rem 0.8rem;
+  }
+
+  .book-details h2 {
+    font-size: 1.4rem;
+  }
+
+  .description {
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+  }
+
+  .review-date {
+    font-size: 0.8rem;
+  }
+}

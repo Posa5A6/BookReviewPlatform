@@ -10,6 +10,7 @@
 .hero {
   text-align: center;
   margin-top: 4rem;
+  padding: 0 1rem;
 }
 
 .hero-title {
@@ -43,6 +44,7 @@
 
 .featured-section {
   margin-top: 5rem;
+  padding: 0 1rem;
 }
 
 .section-heading {
@@ -85,6 +87,7 @@
   font-size: 0.95rem;
   color: #6b7280;
 }
+
 /* Spinner styles */
 .spinner-container {
   height: 100vh;
@@ -113,4 +116,70 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* ========================= */
+/* 📱 Responsive Breakpoints */
+/* ========================= */
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .book-card {
+    width: 160px;
+  }
+
+  .book-image {
+    height: 220px;
+  }
+
+  .section-heading {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-container {
+    padding: 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .explore-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .book-card {
+    width: 140px;
+    padding: 0.8rem;
+  }
+
+  .book-image {
+    height: 180px;
+  }
+
+  .book-title {
+    font-size: 1rem;
+  }
+
+  .book-author {
+    font-size: 0.85rem;
+  }
+
+  .section-heading {
+    font-size: 1.4rem;
+  }
 }

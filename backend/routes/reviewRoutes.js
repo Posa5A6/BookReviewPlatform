@@ -6,7 +6,7 @@ import {
   getReviewsForBook,
 } from '../controllers/reviewController.js';
 
-import sessionProtect from '../middleware/sessionAuth.js';
+import sessionProtect from '../middleware/sessionAuth.js'; // Make sure this is the correct middleware name
 
 const router = express.Router();
 

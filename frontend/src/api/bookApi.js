@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+baseURL: 'https://bookreviewplatform-3.onrender.com/api',
   withCredentials: true, // allows sending cookies for session-based auth
 });
 

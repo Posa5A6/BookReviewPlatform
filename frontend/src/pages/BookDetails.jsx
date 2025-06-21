@@ -22,8 +22,8 @@ const BookDetails = () => {
       try {
         setLoading(true);
         const [bookRes, reviewsRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/books/${id}`),
-          axios.get(`http://localhost:5000/api/reviews/${id}`)
+          axios.get(`https://bookreviewplatform-3.onrender.com/api/books/${id}`),
+          axios.get(`https://bookreviewplatform-3.onrender.com/api/reviews/${id}`)
         ]);
         setBook(bookRes.data);
         setReviews(reviewsRes.data);

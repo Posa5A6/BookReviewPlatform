@@ -1,24 +1,31 @@
+// backend/controllers/authController.js
+
 import asyncHandler from 'express-async-handler';
+import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
-import bcrypt from 'bcryptjs';  
 
 /* ------------------------------------------------------------------ */
-/*  REGISTER USER  – POST /api/auth/register                          */
+/*  REGISTER USER  – POST /api/auth/register                          */
 /* ------------------------------------------------------------------ */
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
-  // Check for existing account
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
     throw new Error('User already exists');
   }
 
-  // Always register as “user”, not admin
-  const user = await User.create({ name, email, password, role: 'user' });
+  // Hash password before saving
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Start session
+  const user = await User.create({
+    name,
+    email,
+    password: hashedPassword,
+    role: 'user',
+  });
+
   req.session.userId = user._id;
 
   res.status(201).json({
@@ -31,13 +38,13 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 /* ------------------------------------------------------------------ */
-/*  USER LOGIN  – POST /api/auth/login                                */
+/*  USER LOGIN  – POST /api/auth/login                                */
 /* ------------------------------------------------------------------ */
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-  if (!user || !(await user.matchPassword(password))) {
+  if (!user || !(await bcrypt.compare(password, user.password))) {
     res.status(401);
     throw new Error('Invalid email or password');
   }
@@ -47,7 +54,6 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error('Access denied: Not a normal user');
   }
 
-  // Store session
   req.session.userId = user._id;
 
   res.json({
@@ -60,9 +66,9 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 /* ------------------------------------------------------------------ */
-/*  ADMIN LOGIN  – POST /api/auth/admin                               */
+/*  ADMIN LOGIN  – POST /api/auth/admin                               */
 /* ------------------------------------------------------------------ */
- const adminLogin = asyncHandler(async (req, res) => {
+const adminLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -72,7 +78,6 @@ const loginUser = asyncHandler(async (req, res) => {
     user.role === 'admin' &&
     (await bcrypt.compare(password, user.password))
   ) {
-    // ✅ Store session ID so admin stays authenticated
     req.session.userId = user._id;
 
     res.json({
@@ -88,12 +93,10 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('Invalid admin credentials');
   }
-  console.log('Session:', req.session);
-
 });
 
 /* ------------------------------------------------------------------ */
-/*  LOGOUT  – POST /api/auth/logout                                   */
+/*  LOGOUT  – POST /api/auth/logout                                   */
 /* ------------------------------------------------------------------ */
 const logoutUser = (req, res) => {
   req.session.destroy((err) => {
@@ -105,22 +108,18 @@ const logoutUser = (req, res) => {
     res.json({ message: 'User logged out successfully' });
   });
 };
- /* ------------------------------------------------------------------ */
-/*  GET CURRENT USER  – GET /api/auth/me                              */
+
+/* ------------------------------------------------------------------ */
+/*  GET CURRENT USER  – GET /api/auth/me                              */
 /* ------------------------------------------------------------------ */
 const getMe = asyncHandler(async (req, res) => {
-  /* Accept either a normal‑user session or an admin session.
-     If you use ONE key for both (recommended), just read req.session.userId. */
-      console.log('Session:', req.session);
-      
-  const userId = req.session.userId ?? req.session.adminId;
+  const userId = req.session.userId;
 
   if (!userId) {
     res.status(401);
     throw new Error('Not logged in');
   }
 
-  // Exclude password before sending
   const user = await User.findById(userId).select('-password');
   if (!user) {
     res.status(404);
@@ -128,12 +127,17 @@ const getMe = asyncHandler(async (req, res) => {
   }
 
   res.json({
-    _id:   user._id,
-    name:  user.name,
+    _id: user._id,
+    name: user.name,
     email: user.email,
-    role:  user.role,
+    role: user.role,
   });
 });
 
-
-export { registerUser, loginUser , adminLogin,logoutUser , getMe };
+export {
+  registerUser,
+  loginUser,
+  adminLogin,
+  logoutUser,
+  getMe,
+};

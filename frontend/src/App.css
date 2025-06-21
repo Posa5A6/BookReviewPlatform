@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+/* Prevent horizontal scroll on small screens */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Ensure all containers are full-width and don't cause overflow */
+* {
+  box-sizing: border-box;
+  max-width: 100%;
+}

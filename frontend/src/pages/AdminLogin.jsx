@@ -1,10 +1,10 @@
 // src/pages/AdminLogin.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import './AdminLogin.css';
-
+import api from '../api/axios';
 
 const AdminLogin = () => {
   const navigate  = useNavigate();
@@ -15,10 +15,16 @@ const AdminLogin = () => {
   const [serverError, setServerError] = useState('');
   const [submitting, setSubmitting]   = useState(false);
 
-  // safer email regex (hyphen moved to the end)
   const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,}$/;
 
-  /* ---------- helpers ---------- */
+  // 🚫 Prevent already-logged-in admins from accessing login
+useEffect(() => {
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  if (storedUser?.role === 'admin') {
+    navigate('/admin/dashboard');
+  }
+}, [navigate]);
+
   const validate = () => {
     const newErrors = {};
     if (!formData.email.trim()) newErrors.email = 'E‑mail is required';
@@ -33,7 +39,6 @@ const AdminLogin = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  /* ---------- submit ---------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
@@ -47,22 +52,15 @@ const AdminLogin = () => {
     setSubmitting(true);
 
     try {
-      // ‼️  adjust the URL if your auth router differs
-      const { data } = await axios.post('/auth/admin/login', formData);
-
+      const { data } = await api.post('/auth/adminLogin', formData);
       if (data?.user?.role !== 'admin') {
         throw new Error('Not authorised as admin');
       }
 
-      /* Persist Basic‑Auth for future requests + refreshes */
       const basicAuth = btoa(`${formData.email}:${formData.password}`);
-
-// ⬇️ Set Axios default header for all future requests
-axios.defaults.headers.common.Authorization = `Basic ${basicAuth}`;
-
-// ⬇️ Save it for restoring after refresh
-localStorage.setItem('basicAuth', basicAuth);
-localStorage.setItem('user', JSON.stringify(data.user));
+      axios.defaults.headers.common.Authorization = `Basic ${basicAuth}`;
+      localStorage.setItem('basicAuth', basicAuth);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
       setUser(data.user);
       navigate('/admin/dashboard');
@@ -75,13 +73,11 @@ localStorage.setItem('user', JSON.stringify(data.user));
     }
   };
 
-  /* ---------- render ---------- */
   return (
     <div className="auth-container">
       <h2>Admin Login</h2>
 
       <form onSubmit={handleSubmit} noValidate>
-        {/* email */}
         <div className="form-group">
           <label htmlFor="email">E‑mail</label>
           <input
@@ -95,7 +91,6 @@ localStorage.setItem('user', JSON.stringify(data.user));
           {errors.email && <span className="error">{errors.email}</span>}
         </div>
 
-        {/* password */}
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -109,7 +104,6 @@ localStorage.setItem('user', JSON.stringify(data.user));
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
 
-        {/* server error */}
         {serverError && <p className="error">{serverError}</p>}
 
         <button type="submit" disabled={submitting}>

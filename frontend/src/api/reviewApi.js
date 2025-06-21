@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
-  withCredentials: true, // for session-based auth
+  baseURL: 'https://bookreviewplatform-3.onrender.com/api',
+  withCredentials: true, // ✅ session-based auth
 });
 
 // ⭐ Create a review for a specific book
 export const createReview = async (bookId, reviewData) => {
-  const response = await API.post(`/reviews/${bookId}`, reviewData);
+  const response = await API.post(`/reviews/${bookId}`, reviewData); // ✅ Fixed here
   return response.data;
 };
 

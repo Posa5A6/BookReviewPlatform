@@ -1,70 +1,179 @@
-# Getting Started with Create React App
+# 📚 BookReview Platform – Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern and responsive web interface for browsing, reviewing, and managing books. Built with **React**, **Framer Motion**, and a clean UI experience for both users and admins.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🌐 Live Demo
 
-### `npm start`
+🚀 [Coming Soon – Deploy via Vercel/Netlify]
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📁 Project Structure
 
-### `npm test`
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+📦 frontend/
+├── public/
+│   └── index.html
+├── src/
+│   ├── api/
+│   │   └── axios.js         # Axios config
+│   │   └── bookApi.js       # Book API handlers
+│   ├── components/
+│   │   └── Navbar.jsx       # Responsive nav
+│   ├── context/
+│   │   └── AuthContext.jsx  # Auth state & provider
+│   ├── pages/
+│   │   ├── AdminDashboard.jsx
+│   │   ├── AdminLogin.jsx
+│   │   ├── BookDetails.jsx
+│   │   ├── BookList.jsx
+│   │   ├── Books.jsx
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── Profile.jsx
+│   │   └── ReviewForm.jsx
+│   ├── App.js
+│   └── index.js
+├── .env
+├── .gitignore
+├── package.json
+└── README.md
 
-### `npm run build`
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ✨ Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+✅ **Responsive Design** with modern layout  
+✅ **Framer Motion** page transitions  
+✅ **Loading Spinners** on all data fetches  
+✅ **Book Reviews** (2-column cards layout)  
+✅ **Price Display** – always shows `Free`  
+✅ **Conditional Links** in description (or "Update Soon")  
+✅ **Only Users** can write reviews (admins are restricted)  
+✅ **Search & Filter** books by title/author  
+✅ **Pagination** for performance  
+✅ **Role-Based Navbar** (admin/user)  
+✅ **Clean Animations & UI** with full mobile support
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🛠️ Built With
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **React.js** (v18+)
+- **React Router DOM**
+- **Framer Motion**
+- **Axios**
+- **CSS3** (Custom modern styling)
+- **React Context API** (for auth state)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🔧 Installation
 
-## Learn More
+```bash
+# Clone the project
+git clone https://github.com/your-username/bookreview-frontend.git
+cd bookreview-frontend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Install dependencies
+npm install
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Start the frontend
+npm start
+```
 
-### Code Splitting
+🌐 Open in browser: [http://localhost:3000](http://localhost:3000)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 📦 Environment Variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Create a `.env` file:
 
-### Making a Progressive Web App
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Ensure your `axios.js` points to `process.env.REACT_APP_API_URL`.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📌 Key Routes
 
-### Deployment
+| Route               | Description                 |
+| ------------------- | --------------------------- |
+| `/`                 | Home (Explore books)        |
+| `/books`            | List of all books           |
+| `/books/:id`        | Book details + reviews      |
+| `/books/:id/review` | Submit a review (User only) |
+| `/login`            | User login                  |
+| `/register`         | New user registration       |
+| `/admin-login`      | Admin login                 |
+| `/profile`          | User profile                |
+| `/admin/dashboard`  | Admin dashboard & controls  |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 🔐 Authentication
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Uses **Basic Auth** headers via `Authorization`
+- Credentials stored securely in `localStorage`
+- Auto-injects headers with every Axios call
+- Handles protected routes and logout
+- Auto re-login after refresh (if session valid)
+
+---
+
+## 🎨 UI Highlights
+
+- 💫 Smooth animations on every page
+- 📦 Book cards with hover effects
+- 🔎 Live filtering for books
+- 🧾 Review cards in 2-column format
+- 📱 Mobile responsive + touch friendly
+
+---
+
+## 📷 Screenshots
+
+> Add UI snapshots here once deployed!
+
+---
+
+## 🧠 Future Improvements
+
+- Dark Mode toggle
+- Book categories & genres
+- Upload book PDFs
+- Like/upvote reviews
+- Admin controls for review moderation
+
+---
+
+## 👨‍💻 Author
+
+**Narendra Posa**
+📧 [narisnarendras6@gmail.com](mailto:narisnarendras6@gmail.com)
+📱 +91 9014293910
+
+---
+
+## 📄 License
+
+This project is free and open-source for learning and educational purposes.
+
+---
+
+## ⭐️ Support
+
+If you found this project helpful, consider giving it a ⭐ on GitHub!
+
+```
+
+
+```
