@@ -37,26 +37,22 @@ const registerUser = asyncHandler(async (req, res) => {
 /* ------------------------------------------------------------------ */
 /*  USER LOGIN – POST /api/auth/login                                 */
 /* ------------------------------------------------------------------ */
+// authController.js
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-  if (!user || !(await bcrypt.compare(password, user.password))) {
+  if (!user || !(await user.matchPassword(password))) {
     res.status(401);
     throw new Error('Invalid email or password');
   }
 
-  if (user.role !== 'user') {
-    res.status(403);
-    throw new Error('Access denied: Not a normal user');
-  }
-
-  res.json({
+  req.session.userId = user._id; // Storing session
+  res.status(200).json({
     _id: user._id,
     name: user.name,
     email: user.email,
     role: user.role,
-    message: 'User logged in successfully',
   });
 });
 
