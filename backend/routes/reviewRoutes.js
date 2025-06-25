@@ -6,18 +6,12 @@ import {
   getReviewsForBook,
 } from '../controllers/reviewController.js';
 
-import sessionProtect from '../middleware/sessionAuth.js'; // Make sure this is the correct middleware name
-
 const router = express.Router();
 
-// @route   GET /api/reviews/:bookId
-// @desc    Get all reviews for a specific book
-// @access  Public
+// Public: Get all reviews for a specific book
 router.get('/:bookId', getReviewsForBook);
 
-// @route   POST /api/reviews/:bookId
-// @desc    Submit a review for a specific book
-// @access  User (session-based)
-router.post('/:bookId', sessionProtect, createReview);
+// Submit review (auth enforced on frontend via localStorage)
+router.post('/:bookId', createReview);
 
 export default router;

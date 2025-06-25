@@ -1,3 +1,5 @@
+// backend/routes/adminRoutes.js
+
 import express from 'express';
 import {
   addBook,
@@ -7,17 +9,15 @@ import {
   getAllReviews
 } from '../controllers/adminController.js';
 
-import adminSessionProtect from '../middleware/adminBasicAuth.js';
-
 const router = express.Router();
 
-// Admin routes (all protected via session-based admin middleware)
-router.post('/books', adminSessionProtect, addBook);
-router.delete('/books/:id', adminSessionProtect, deleteBook);
-router.get('/books', adminSessionProtect, getAllBooks);
-router.get('/users', adminSessionProtect, getAllUsers);
-router.get('/reviews', adminSessionProtect, getAllReviews);
-router.get('/dashboard', adminSessionProtect, (req, res) => {
+// Admin routes – protected on frontend by checking localStorage role
+router.post('/books', addBook);
+router.delete('/books/:id', deleteBook);
+router.get('/books', getAllBooks);
+router.get('/users', getAllUsers);
+router.get('/reviews', getAllReviews);
+router.get('/dashboard', (req, res) => {
   res.json({ message: 'Welcome, admin' });
 });
 

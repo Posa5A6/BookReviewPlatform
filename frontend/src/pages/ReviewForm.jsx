@@ -1,21 +1,22 @@
+// src/pages/ReviewForm.jsx
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { createReview } from '../api/reviewApi';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import './ReviewForm.css';
+import api from '../api/axios'; // Make sure this is the axios instance with withCredentials: true
 
 const ReviewForm = () => {
-  const { id: bookId } = useParams();     // book ID from URL
-  const navigate      = useNavigate();
-  const { user }      = useAuth();        // ensure user is logged in
+  const { id: bookId } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const [rating, setRating]   = useState(5);
+  const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  // If not logged in, redirect to login
+  // If not logged in, prompt login
   if (!user) {
     return (
       <div className="review-login-prompt">
@@ -28,12 +29,14 @@ const ReviewForm = () => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+
     try {
-      await createReview(bookId, { rating, comment });
-      setMessage('Review submitted successfully!');
+      const res = await api.post(`/reviews/${bookId}`, { rating, comment });
+      setMessage('✅ Review submitted successfully!');
       setTimeout(() => navigate(`/books/${bookId}`), 1500);
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Submission failed');
+      console.error(err);
+      setMessage(err?.response?.data?.message || '❌ Failed to submit review.');
     } finally {
       setLoading(false);
     }
@@ -57,7 +60,7 @@ const ReviewForm = () => {
           onChange={(e) => setRating(Number(e.target.value))}
           required
         >
-          {[5,4,3,2,1].map((star) => (
+          {[5, 4, 3, 2, 1].map((star) => (
             <option key={star} value={star}>
               {'⭐'.repeat(star)} ({star})
             </option>

@@ -3,16 +3,16 @@ import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
 
 /**
- * @desc   Get current logged-in user's profile
- * @route  GET /api/users/profile
- * @access User (session)
+ * @desc   Get user's profile (publicly accessible via userId)
+ * @route  POST /api/users/profile
+ * @access Public (controlled by frontend role logic)
  */
 const getUserProfile = asyncHandler(async (req, res) => {
-  const userId = req.session.userId;
+  const { userId } = req.body;
 
   if (!userId) {
     res.status(401);
-    throw new Error('Not authenticated');
+    throw new Error('User ID is required');
   }
 
   const user = await User.findById(userId).select('-password');
@@ -28,29 +28,28 @@ const getUserProfile = asyncHandler(async (req, res) => {
 /**
  * @desc   Update user's profile (name, email, password)
  * @route  PUT /api/users/profile
- * @access User (session)
+ * @access Public (authenticated via localStorage)
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const userId = req.session.userId;
+  const { userId, name, email, password } = req.body;
 
   if (!userId) {
     res.status(401);
-    throw new Error('Not authenticated');
+    throw new Error('User ID is required');
   }
 
   const user = await User.findById(userId);
-
   if (!user) {
     res.status(404);
     throw new Error('User not found');
   }
 
-  user.name = req.body.name || user.name;
-  user.email = req.body.email || user.email;
+  user.name = name || user.name;
+  user.email = email || user.email;
 
-  if (req.body.password) {
+  if (password) {
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(req.body.password, salt);
+    user.password = await bcrypt.hash(password, salt);
   }
 
   const updatedUser = await user.save();

@@ -6,18 +6,12 @@ import {
   updateUserProfile,
 } from '../controllers/userController.js';
 
-import sessionProtect from '../middleware/sessionAuth.js';
-
 const router = express.Router();
 
-// @route   GET /api/users/profile
-// @desc    Get current user's profile
-// @access  Session (user)
-router.get('/profile', sessionProtect, getUserProfile);
+// GET user profile (auth enforced on frontend)
+router.get('/profile', getUserProfile);
 
-// @route   PUT /api/users/profile
-// @desc    Update current user's profile
-// @access  Session (user)
-router.put('/profile', sessionProtect, updateUserProfile);
+// PUT update profile (auth enforced on frontend)
+router.put('/profile', updateUserProfile);
 
 export default router;

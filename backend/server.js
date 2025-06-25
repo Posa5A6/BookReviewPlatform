@@ -3,8 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
@@ -20,9 +18,7 @@ connectDB();
 
 const app = express();
 
-app.set('trust proxy', 1);       // <‑‑ THIS IS REQUIRED on Render/Fly/Heroku
-
-// CORS
+// Allow cross-origin requests (no credentials/cookies now)
 app.use(
   cors({
     origin: [
@@ -30,31 +26,14 @@ app.use(
       'https://bookreview-platform.netlify.app',
       'https://bookreviewplatform-3.onrender.com',
     ],
-    credentials: true,
     optionsSuccessStatus: 200,
   })
 );
 
-// JSON parser
+// Parse JSON requests
 app.use(express.json());
 
-// Sessions
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-    cookie: {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-      secure: process.env.NODE_ENV === 'production',          // only true on Render
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-    },
-  })
-);
-
-// Routes
+// API Routes
 app.get('/', (_req, res) => {
   res.send('📚 Book Review Platform API is running...');
 });
@@ -65,10 +44,11 @@ app.use('/api/books', bookRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/auth', authRoutes);
 
-// Error handlers
+// Error Handlers
 app.use(notFound);
 app.use(errorHandler);
 
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`✅ Server running on http://localhost:${PORT}`)

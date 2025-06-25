@@ -1,6 +1,9 @@
+// src/api/axios.js
 import axios from 'axios';
 
-export default axios.create({
+const api = axios.create({
   baseURL: 'https://bookreviewplatform-3.onrender.com/api',
-  withCredentials: true, // MUST be true to send cookies
+  withCredentials: true, // ✅ crucial for cookies/session
 });
+
+export default api;
